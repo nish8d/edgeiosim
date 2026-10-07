@@ -66,8 +66,13 @@ def test_no_transaction_migrations_run_outside_a_transaction(
 def test_rollup_backfill_restores_buckets_older_than_the_policy_window(
     conn: psycopg.Connection, migrations_dir: Path
 ) -> None:
-    five_hours_ago = datetime.now(UTC).replace(microsecond=0) - timedelta(hours=5)
+    now = datetime.now(UTC).replace(microsecond=0)
+    five_hours_ago = now - timedelta(hours=5)
     process_report(conn, sample_report({"timestamp": five_hours_ago.isoformat()}))
+    # Live data inside the policy window. Without it the refresh materializes nothing, the
+    # watermark stays at -infinity, and real-time aggregation would mask the lost history.
+    two_hours_ago = (now - timedelta(hours=2)).isoformat()
+    process_report(conn, sample_report({"timestamp": two_hours_ago}))
     # What the hourly policy does on schedule: refresh only [now-3h, now-1h].
     conn.execute(
         "CALL refresh_continuous_aggregate('health_hourly', "
