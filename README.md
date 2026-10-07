@@ -1,6 +1,6 @@
 # edgeio
 
-[![CI](https://github.com/nish8d/edgeio/actions/workflows/ci.yml/badge.svg)](https://github.com/nish8d/edgeio/actions/workflows/ci.yml)
+[![CI](https://github.com/nish8d/edgeiosim/actions/workflows/ci.yml/badge.svg)](https://github.com/nish8d/edgeiosim/actions/workflows/ci.yml)
 
 A health monitoring platform for a fleet of edge devices. Fifty simulated devices report telemetry every five minutes over Kafka. A stream worker validates and stores the readings in TimescaleDB and raises alerts. A REST API and a React dashboard show live status, history and alerts.
 
@@ -40,8 +40,8 @@ The simulator stands in for a real `health.py` agent that each device would run 
 Requirements: Docker with Compose v2.
 
 ```bash
-git clone https://github.com/nish8d/edgeio.git
-cd edgeio
+git clone https://github.com/nish8d/edgeiosim.git
+cd edgeiosim
 make up
 ```
 
